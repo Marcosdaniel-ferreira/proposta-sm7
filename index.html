@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SM7 — Proposta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --white: #ffffff;
+      --black: #0a0a0a;
+      --mid: #6b6b6b;
+      --line: #e0e0e0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── SLIDES ── */
+    .slides {
+      width: 100%;
+    }
+
+    .slide {
+      width: 100%;
+      display: block;
+      line-height: 0;
+    }
+
+    .slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--white);
+      border-top: 1px solid var(--line);
+      padding: 72px 40px 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .footer-logo {
+      width: 160px;   /* largura no desktop */
+      height: auto;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .footer-logo {
+        width: 110px; /* largura no mobile */
+      }
+    }
+
+    .footer-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .footer-name {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.7rem, 2vw, 0.85rem);
+      letter-spacing: 0.3em;
+      color: var(--mid);
+      text-transform: uppercase;
+    }
+
+    .footer-role {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.65rem, 1.8vw, 0.78rem);
+      letter-spacing: 0.25em;
+      color: var(--mid);
+      text-transform: uppercase;
+      margin-top: -20px;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      margin-top: 8px;
+    }
+
+    .footer-links a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--black);
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: opacity 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      opacity: 0.5;
+    }
+
+    .footer-links svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .footer-sep {
+      width: 1px;
+      height: 16px;
+      background: var(--line);
+    }
+
+    .footer-copy {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      color: var(--line);
+      text-transform: uppercase;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       SLIDES
+       Nomeie suas imagens: slide01.jpg … slide11.jpg
+       e coloque-as na pasta /imagens/
+  ════════════════════════════════════════ -->
+  <section class="slides">
+
+    <div class="slide"><img src="imagens/01.jpg" alt="" /></div>
+    <div class="slide"><img src="imagens/02.jpg" alt="" /></div>
+    <div class="slide"><img src="imagens/03.jpg" alt="" /></div>
+    <div class="slide"><img src="imagens/04.jpg" alt="" /></div>
+    <div class="slide"><img src="imagens/05.jpg" alt="" /></div>
+    <div class="slide"><img src="imagens/06.jpg" alt="" /></div>
+    <div class="slide"><img src="imagens/07.jpg" alt="" /></div>
+    <div class="slide"><img src="imagens/08.jpg" alt="" /></div>
+    <div class="slide"><img src="imagens/09.jpg" alt="" /></div>
+    <div class="slide"><img src="imagens/10.jpg" alt="" /></div>
+    <div class="slide"><img src="imagens/11.jpg" alt="" /></div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════ -->
+  <footer>
+
+    <!-- LOGO — substitua o src pelo caminho da sua logo -->
+    <img class="footer-logo" src="imagens/logo.png" alt="SM7" />
+
+    <div class="footer-divider"></div>
+
+    <span class="footer-name">Marcos Ferreira</span>
+    <span class="footer-role">Diretor de Arte</span>
+
+    <div class="footer-links">
+
+      <!-- INSTAGRAM — substitua o href pelo seu link -->
+      <a href="SEU_LINK_INSTAGRAM_AQUI" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+        </svg>
+        Instagram
+      </a>
+
+      <div class="footer-sep"></div>
+
+      <!-- WHATSAPP — substitua o número: 5535999999999 -->
+      <a href="https://wa.me/5500000000000" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+        </svg>
+        WhatsApp
+      </a>
+
+    </div>
+
+    <span class="footer-copy">© SM7 Studio — Todos os direitos reservados</span>
+
+  </footer>
+
+</body>
+</html>
