@@ -32,6 +32,74 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* ── AVISO MOBILE ── */
+    .aviso-mobile {
+      display: none;
+      background-color: var(--black);
+      color: var(--white);
+      text-align: center;
+      padding: 12px 20px;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    @media (max-width: 768px) and (orientation: portrait) {
+      .aviso-mobile {
+        display: block;
+      }
+    }
+
+    /* ── LIGHTBOX (TELA CHEIA) ── */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(10, 10, 10, 0.95);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .lightbox.ativo {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox img {
+      max-width: 95%;
+      max-height: 95vh;
+      object-fit: contain;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    .lightbox-fechar {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      color: var(--white);
+      font-size: 2.5rem;
+      font-weight: 300;
+      cursor: pointer;
+      user-select: none;
+      line-height: 1;
+      transition: opacity 0.2s ease;
+    }
+
+    .lightbox-fechar:hover {
+      opacity: 0.6;
+    }
+
     /* ── SLIDES ── */
     .slides {
       width: 100%;
@@ -47,6 +115,7 @@
       width: 100%;
       height: auto;
       display: block;
+      cursor: pointer; /* Adicionado para indicar que a imagem é clicável */
     }
 
     /* ── FOOTER ── */
@@ -144,6 +213,11 @@
 </head>
 <body>
 
+  <!-- AVISO MOBILE -->
+  <div class="aviso-mobile">
+    Para melhorar sua experiência ao ler o documento, deite o celular.
+  </div>
+
   <!-- ═══════════════════════════════════════
        SLIDES
        Nomeie suas imagens: slide01.jpg … slide11.jpg
@@ -205,6 +279,44 @@
     <span class="footer-copy">© SM7 Studio — Todos os direitos reservados</span>
 
   </footer>
+
+  <!-- LIGHTBOX CONTAINER -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-fechar" id="lightbox-fechar">&times;</div>
+    <img src="" alt="" id="lightbox-img" />
+  </div>
+
+  <!-- SCRIPT PARA ABRIR/FECHAR A IMAGEM -->
+  <script>
+    const imagens = document.querySelectorAll('.slide img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const btnFechar = document.getElementById('lightbox-fechar');
+
+    // Abre a lightbox ao clicar na imagem
+    imagens.forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('ativo');
+      });
+    });
+
+    // Função para fechar a lightbox
+    const fecharLightbox = () => {
+      lightbox.classList.remove('ativo');
+      setTimeout(() => { lightboxImg.src = ''; }, 400); // Limpa o src após a transição
+    };
+
+    // Fecha ao clicar no X
+    btnFechar.addEventListener('click', fecharLightbox);
+
+    // Fecha ao clicar fora da imagem (no fundo escuro)
+    lightbox.addEventListener('click', (e) => {
+      if (e.target !== lightboxImg) {
+        fecharLightbox();
+      }
+    });
+  </script>
 
 </body>
 </html>
