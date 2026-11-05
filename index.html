@@ -9,102 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-/* ── TELA DE INTRODUÇÃO (HUD) NEON ── */
-#hud-intro {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #030305;
-  z-index: 10000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Share Tech Mono', monospace;
-  color: #e0e0e0;
-  transition: opacity 1.5s ease, visibility 1.5s;
-  cursor: pointer; /* A tela toda é clicável */
-}
-
-#hud-intro.oculto {
-  opacity: 0;
-  visibility: hidden;
-}
-
-/* O aviso pulsante para tocar na tela */
-#toque-tela {
-  font-size: 1.1rem;
-  letter-spacing: 0.25em;
-  color: #ffffff;
-  text-align: center;
-  text-shadow: 0 0 5px #012dc7, 0 0 15px #012dc7, 0 0 30px #012dc7;
-  animation: pulso-neon 1.5s infinite alternate;
-}
-
-@keyframes pulso-neon {
-  from { opacity: 0.4; text-shadow: 0 0 5px #012dc7; }
-  to { opacity: 1; text-shadow: 0 0 10px #012dc7, 0 0 20px #4d73ff, 0 0 40px #012dc7; }
-}
-
-#hud-conteudo {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 90%;
-  max-width: 600px;
-}
-
-/* Container da foto com borda neon e scanner */
-.hud-foto-container {
-  position: relative;
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  margin-bottom: 24px;
-  border: 2px solid #012dc7;
-  box-shadow: 0 0 20px rgba(1, 45, 199, 0.6), inset 0 0 20px rgba(1, 45, 199, 0.6);
-  overflow: hidden;
-}
-
-.hud-foto {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* Converte a foto comum em um holograma azulado */
-  filter: grayscale(100%) contrast(1.5) sepia(100%) hue-rotate(190deg) saturate(400%);
-}
-
-/* Linha de escaneamento que sobe e desce na foto */
-.hud-scanner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: #ffffff;
-  box-shadow: 0 0 15px #ffffff, 0 0 25px #012dc7;
-  animation: scan-retina 2s infinite linear;
-}
-
-@keyframes scan-retina {
-  0% { top: -10%; opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { top: 110%; opacity: 0; }
-}
-
-#texto-maquina {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  letter-spacing: 0.1em;
-  color: #ffffff;
-  text-shadow: 0 0 8px rgba(1, 45, 199, 0.8);
-  min-height: 100px;
-}
-
     *, *::before, *::after {
       margin: 0;
       padding: 0;
@@ -116,6 +20,7 @@
       --black: #0a0a0a;
       --mid: #6b6b6b;
       --line: #e0e0e0;
+      --neon-azul: #012dc7;
     }
 
     html {
@@ -127,6 +32,193 @@
       color: var(--black);
       font-family: 'Montserrat', sans-serif;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* Trava de scroll para isolar a apresentação da tela inicial */
+    body.travado {
+      overflow: hidden !important;
+      height: 100vh !important;
+      touch-action: none !important;
+    }
+
+    /* ── TELA DE INTRODUÇÃO (HUD JARVIS) ── */
+    #hud-intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      background-color: #030305;
+      z-index: 100000; /* Isola completamente a apresentação */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      color: #e0e0e0;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      border-bottom: 3px solid var(--neon-azul);
+      box-shadow: 0 20px 40px rgba(1, 45, 199, 0.45);
+      /* Movimento suave de subida estilo Jarvis */
+      transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+      transform: translateY(0);
+      will-change: transform;
+    }
+
+    /* Comando que sobe a tela */
+    #hud-intro.subir {
+      transform: translateY(-100%);
+    }
+
+    /* Botão inicial / Aviso pulsante */
+    #btn-acao {
+      background: transparent;
+      border: 1px solid rgba(1, 45, 199, 0.4);
+      padding: 16px 28px;
+      font-family: inherit;
+      font-size: 1rem;
+      letter-spacing: 0.25em;
+      color: #ffffff;
+      text-align: center;
+      text-shadow: 0 0 5px var(--neon-azul), 0 0 15px var(--neon-azul), 0 0 30px var(--neon-azul);
+      box-shadow: inset 0 0 15px rgba(1, 45, 199, 0.3), 0 0 15px rgba(1, 45, 199, 0.3);
+      animation: pulso-neon 1.5s infinite alternate;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    @keyframes pulso-neon {
+      from { opacity: 0.5; box-shadow: 0 0 10px rgba(1, 45, 199, 0.2); }
+      to { opacity: 1; box-shadow: 0 0 25px rgba(1, 45, 199, 0.8), inset 0 0 20px rgba(1, 45, 199, 0.5); }
+    }
+
+    #hud-conteudo {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    /* ── MOLDURA COM CANTOS EM "L" CIBERNÉTICOS ── */
+    .hud-foto-wrapper {
+      position: relative;
+      width: 170px;
+      height: 170px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    /* Os 4 cantos em L */
+    .hud-corner {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: var(--neon-azul);
+      border-style: solid;
+      pointer-events: none;
+      filter: drop-shadow(0 0 6px var(--neon-azul));
+      animation: corner-glow 2s infinite ease-in-out alternate;
+    }
+
+    .hud-corner.tl {
+      top: 0;
+      left: 0;
+      border-width: 3px 0 0 3px;
+    }
+
+    .hud-corner.tr {
+      top: 0;
+      right: 0;
+      border-width: 3px 3px 0 0;
+    }
+
+    .hud-corner.bl {
+      bottom: 0;
+      left: 0;
+      border-width: 0 0 3px 3px;
+    }
+
+    .hud-corner.br {
+      bottom: 0;
+      right: 0;
+      border-width: 0 3px 3px 0;
+    }
+
+    @keyframes corner-glow {
+      from { border-color: var(--neon-azul); filter: drop-shadow(0 0 5px var(--neon-azul)); }
+      to { border-color: #5580ff; filter: drop-shadow(0 0 12px #5580ff); }
+    }
+
+    /* Container circular interno da foto */
+    .hud-foto-container {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(1, 45, 199, 0.8);
+      box-shadow: 0 0 20px rgba(1, 45, 199, 0.6), inset 0 0 20px rgba(1, 45, 199, 0.6);
+      overflow: hidden;
+    }
+
+    .hud-foto {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(1.5) sepia(100%) hue-rotate(190deg) saturate(400%);
+    }
+
+    .hud-scanner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #ffffff;
+      box-shadow: 0 0 15px #ffffff, 0 0 25px var(--neon-azul);
+      animation: scan-retina 2s infinite linear;
+    }
+
+    @keyframes scan-retina {
+      0% { top: -10%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 110%; opacity: 0; }
+    }
+
+    .hud-alvo-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: #8da4ff;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    #texto-maquina {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      letter-spacing: 0.08em;
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(1, 45, 199, 0.8);
+      min-height: 90px;
+    }
+
+    /* Novo: Dica oculta que só aparece quando o texto terminar */
+    .hud-dica-avancar {
+      margin-top: 20px;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: #707070;
+      text-transform: uppercase;
+      opacity: 0; 
+      transition: opacity 1s ease; 
     }
 
     /* ── AVISO MOBILE ── */
@@ -198,22 +290,9 @@
     }
 
     /* ── SLIDES ── */
-    .slides {
-      width: 100%;
-    }
-
-    .slide {
-      width: 100%;
-      display: block;
-      line-height: 0;
-    }
-
-    .slide img {
-      width: 100%;
-      height: auto;
-      display: block;
-      cursor: pointer; /* Adicionado para indicar que a imagem é clicável */
-    }
+    .slides { width: 100%; }
+    .slide { width: 100%; display: block; line-height: 0; }
+    .slide img { width: 100%; height: auto; display: block; cursor: pointer; }
 
     /* ── FOOTER ── */
     footer {
@@ -226,118 +305,60 @@
       gap: 32px;
     }
 
-    .footer-logo {
-      width: 160px;   /* largura no desktop */
-      height: auto;
-      display: block;
-    }
-
-    @media (max-width: 600px) {
-      .footer-logo {
-        width: 110px; /* largura no mobile */
-      }
-    }
-
-    .footer-divider {
-      width: 40px;
-      height: 1px;
-      background: var(--line);
-    }
-
-    .footer-name {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.7rem, 2vw, 0.85rem);
-      letter-spacing: 0.3em;
-      color: var(--mid);
-      text-transform: uppercase;
-    }
-
-    .footer-role {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 300;
-      font-size: clamp(0.65rem, 1.8vw, 0.78rem);
-      letter-spacing: 0.25em;
-      color: var(--mid);
-      text-transform: uppercase;
-      margin-top: -20px;
-    }
-
-    .footer-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      margin-top: 8px;
-    }
-
-    .footer-links a {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: var(--black);
-      font-size: 0.75rem;
-      font-weight: 400;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      transition: opacity 0.2s ease;
-    }
-
-    .footer-links a:hover {
-      opacity: 0.5;
-    }
-
-    .footer-links svg {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-    }
-
-    .footer-sep {
-      width: 1px;
-      height: 16px;
-      background: var(--line);
-    }
-
-    .footer-copy {
-      font-size: 0.62rem;
-      letter-spacing: 0.18em;
-      color: var(--line);
-      text-transform: uppercase;
-      margin-top: 16px;
-    }
+    .footer-logo { width: 160px; height: auto; display: block; }
+    @media (max-width: 600px) { .footer-logo { width: 110px; } }
+    .footer-divider { width: 40px; height: 1px; background: var(--line); }
+    .footer-name { font-family: 'Montserrat', sans-serif; font-weight: 300; font-size: clamp(0.7rem, 2vw, 0.85rem); letter-spacing: 0.3em; color: var(--mid); text-transform: uppercase; }
+    .footer-role { font-family: 'Montserrat', sans-serif; font-weight: 300; font-size: clamp(0.65rem, 1.8vw, 0.78rem); letter-spacing: 0.25em; color: var(--mid); text-transform: uppercase; margin-top: -20px; }
+    .footer-links { display: flex; align-items: center; gap: 28px; margin-top: 8px; }
+    .footer-links a { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--black); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; transition: opacity 0.2s ease; }
+    .footer-links a:hover { opacity: 0.5; }
+    .footer-links svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .footer-sep { width: 1px; height: 16px; background: var(--line); }
+    .footer-copy { font-size: 0.62rem; letter-spacing: 0.18em; color: var(--line); text-transform: uppercase; margin-top: 16px; }
   </style>
 </head>
-<body>
-<!-- HUD DE INTRODUÇÃO -->
-<div id="hud-intro">
-  <!-- Aviso inicial em tela cheia -->
-  <div id="toque-tela">[ TOQUE NA TELA PARA INICIAR DECODIFICAÇÃO ]</div>
+<body class="travado">
 
-  <!-- Conteúdo que aparece após o toque -->
-  <div id="hud-conteudo">
-    <div class="hud-foto-container">
-      <img src="imagens/foto-lilian.png" alt="Alvo" class="hud-foto" id="hud-foto" />
-      <div class="hud-scanner"></div>
+  <!-- HUD DE INTRODUÇÃO ESTILO JARVIS -->
+  <div id="hud-intro">
+    
+    <!-- Botão de Início -->
+    <button id="btn-acao">[ TOQUE NA TELA PARA DECODIFICAR ]</button>
+
+    <!-- Conteúdo holográfico exibido pós-toque -->
+    <div id="hud-conteudo">
+      
+      <!-- Moldura com os 4 cantos em "L" -->
+      <div class="hud-foto-wrapper">
+        <span class="hud-corner tl"></span>
+        <span class="hud-corner tr"></span>
+        <span class="hud-corner bl"></span>
+        <span class="hud-corner br"></span>
+
+        <div class="hud-foto-container">
+          <img src="imagens/foto-lilian.png" alt="Alvo" class="hud-foto" id="hud-foto" onerror="this.style.opacity='0'" />
+          <div class="hud-scanner"></div>
+        </div>
+      </div>
+
+      <div class="hud-alvo-tag">// DIRECIONADO: LILIAN MARA</div>
+      <div id="texto-maquina"></div>
+      
+      <!-- Esta dica só aparece quando o texto finalizar -->
+      <div class="hud-dica-avancar" id="dica-avancar">[ TOQUE NOVAMENTE PARA ACESSAR A PROPOSTA ]</div>
     </div>
-    <div id="texto-maquina"></div>
-  </div>
 
-  <audio id="audio-voz" src="audio/voz-lilian.mp3" preload="auto"></audio>
-</div>
+    <audio id="audio-voz" src="audio/voz-lilian.mp3" preload="auto"></audio>
+  </div>
 
   <!-- AVISO MOBILE -->
   <div class="aviso-mobile">
     Para melhorar sua experiência ao ler o documento, deite o celular.
   </div>
 
-  <!-- ═══════════════════════════════════════
-       SLIDES
-       Nomeie suas imagens: slide01.jpg … slide11.jpg
-       e coloque-as na pasta /imagens/
-  ════════════════════════════════════════ -->
+  <!-- SLIDES ORIGINAIS -->
   <section class="slides">
-
     <div class="slide"><img src="imagens/01.jpg" alt="" /></div>
     <div class="slide"><img src="imagens/02.jpg" alt="" /></div>
     <div class="slide"><img src="imagens/03.jpg" alt="" /></div>
@@ -349,25 +370,16 @@
     <div class="slide"><img src="imagens/09.jpg" alt="" /></div>
     <div class="slide"><img src="imagens/10.jpg" alt="" /></div>
     <div class="slide"><img src="imagens/11.jpg" alt="" /></div>
-
   </section>
 
-  <!-- ═══════════════════════════════════════
-       FOOTER
-  ════════════════════════════════════════ -->
+  <!-- FOOTER ORIGINAL -->
   <footer>
-
-    <!-- LOGO — substitua o src pelo caminho da sua logo -->
     <img class="footer-logo" src="imagens/logo.png" alt="SM7" />
-
     <div class="footer-divider"></div>
-
     <span class="footer-name">Marcos Ferreira</span>
     <span class="footer-role">Diretor de Arte</span>
 
     <div class="footer-links">
-
-      <!-- INSTAGRAM — substitua o href pelo seu link -->
       <a href="https://www.instagram.com/dsgnstudiom7/" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
@@ -376,21 +388,15 @@
         </svg>
         Instagram
       </a>
-
       <div class="footer-sep"></div>
-
-      <!-- WHATSAPP — substitua o número: 5535999999999 -->
       <a href="https://wa.me/message/2C4G2O66U5YCJ1" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
         </svg>
         WhatsApp
       </a>
-
     </div>
-
     <span class="footer-copy">© SM7 Studio — Todos os direitos reservados</span>
-
   </footer>
 
   <!-- LIGHTBOX CONTAINER -->
@@ -399,14 +405,13 @@
     <img src="" alt="" id="lightbox-img" />
   </div>
 
-  <!-- SCRIPT PARA ABRIR/FECHAR A IMAGEM -->
+  <!-- SCRIPT LIGHTBOX -->
   <script>
     const imagens = document.querySelectorAll('.slide img');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const btnFechar = document.getElementById('lightbox-fechar');
 
-    // Abre a lightbox ao clicar na imagem
     imagens.forEach(img => {
       img.addEventListener('click', () => {
         lightboxImg.src = img.src;
@@ -414,61 +419,97 @@
       });
     });
 
-    // Função para fechar a lightbox
     const fecharLightbox = () => {
       lightbox.classList.remove('ativo');
-      setTimeout(() => { lightboxImg.src = ''; }, 400); // Limpa o src após a transição
+      setTimeout(() => { lightboxImg.src = ''; }, 400);
     };
 
-    // Fecha ao clicar no X
     btnFechar.addEventListener('click', fecharLightbox);
 
-    // Fecha ao clicar fora da imagem (no fundo escuro)
     lightbox.addEventListener('click', (e) => {
       if (e.target !== lightboxImg) {
         fecharLightbox();
       }
     });
   </script>
- <script>
-  const hudIntro = document.getElementById('hud-intro');
-  const toqueTela = document.getElementById('toque-tela');
-  const hudConteudo = document.getElementById('hud-conteudo');
-  const textoMaquina = document.getElementById('texto-maquina');
-  const audioVoz = document.getElementById('audio-voz');
 
-  const mensagem = "Olá, Lilian Mara. Bem-vinda ao novo. A seguir, iremos te mostrar uma proposta exclusiva para sua marca. Decodificação concluída.";
-  let indexTexto = 0;
-  let hudIniciado = false; // Evita que o usuário clique duas vezes e bugue o áudio
+  <!-- SCRIPT JARVIS: MÁQUINA DE ESCREVER + SUBIDA SUAVE -->
+  <script>
+    const hudIntro = document.getElementById('hud-intro');
+    const btnAcao = document.getElementById('btn-acao');
+    const hudConteudo = document.getElementById('hud-conteudo');
+    const textoMaquina = document.getElementById('texto-maquina');
+    const audioVoz = document.getElementById('audio-voz');
+    const dicaAvancar = document.getElementById('dica-avancar');
 
-  function digitarTexto() {
-    if (indexTexto < mensagem.length) {
-      textoMaquina.innerHTML += mensagem.charAt(indexTexto);
-      indexTexto++;
-      setTimeout(digitarTexto, 45); 
-    } else {
-      setTimeout(() => {
-        hudIntro.classList.add('oculto');
-        setTimeout(() => audioVoz.pause(), 1500); 
-      }, 2000);
+    const mensagem = "Olá, Lilian Mara. Bem-vinda ao novo. A seguir, apresentamos a proposta exclusiva para sua marca. Decodificação concluída.";
+    let indexTexto = 0;
+    let fase = 0; // 0 = início, 1 = decodificando / pronto para subir
+    let subiu = false;
+
+    // Função que toca o áudio de forma segura
+    function tocarAudio() {
+      if (!audioVoz) return;
+      try {
+        audioVoz.currentTime = 0;
+        const playPromise = audioVoz.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => console.warn("Áudio não reproduzido ou bloqueado:", err));
+        }
+      } catch (e) {
+        console.warn(e);
+      }
     }
-  }
 
-  // A tela inteira reage ao primeiro toque
-  hudIntro.addEventListener('click', () => {
-    if (hudIniciado) return; 
-    hudIniciado = true;
+    // Função que digita o texto (sem subida automática!)
+    function digitarTexto() {
+      if (indexTexto < mensagem.length) {
+        textoMaquina.innerHTML += mensagem.charAt(indexTexto);
+        indexTexto++;
+        setTimeout(digitarTexto, 35);
+      } else {
+        // Ao finalizar de digitar o texto, acende suavemente a dica para o cliente clicar
+        if(dicaAvancar) dicaAvancar.style.opacity = '1';
+      }
+    }
 
-    toqueTela.style.display = 'none'; // Some com o aviso "Toque na tela"
-    hudConteudo.style.display = 'flex'; // Revela o holograma e prepara o texto
-    
-    // Pequeno atraso dramático antes de começar a voz e o texto
-    setTimeout(() => {
-      audioVoz.play();
-      digitarTexto(); 
-    }, 500);
-  });
-</script>
+    // Função de subida da tela estilo Jarvis
+    function subirTelaJarvis() {
+      if (subiu) return;
+      subiu = true;
+
+      // Se o cliente clicou para subir enquanto o áudio ainda falava, pausa o áudio. 
+      // Se o áudio já terminou, isso não afeta nada.
+      if (audioVoz) {
+        try { audioVoz.pause(); } catch(e){}
+      }
+
+      // Sobe a tela com a animação CSS
+      hudIntro.classList.add('subir');
+      // Destrava o scroll da página principal para a cliente ler a proposta
+      document.body.classList.remove('travado');
+
+      // Desliga a tela preta de vez após a animação terminar
+      setTimeout(() => {
+        hudIntro.style.display = 'none';
+      }, 1200);
+    }
+
+    // Clique principal da tela
+    hudIntro.addEventListener('click', () => {
+      if (fase === 0) {
+        // Primeiro toque do cliente: Inicia voz, scanner e texto
+        fase = 1;
+        btnAcao.style.display = 'none';
+        hudConteudo.style.display = 'flex';
+        tocarAudio();
+        digitarTexto();
+      } else {
+        // Segundo toque do cliente: Sobe para a proposta
+        subirTelaJarvis();
+      }
+    });
+  </script>
 
 </body>
 </html>
