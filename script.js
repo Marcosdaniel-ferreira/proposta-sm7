@@ -35,7 +35,7 @@
     const audioVoz = document.getElementById('audio-voz');
     const dicaAvancar = document.getElementById('dica-avancar');
 
-    const mensagem = "Identidade, confirmada. Bem-vinda... Pepper Potts. O futuro da sua marca, agora é estritamente confidencial. Toque... e descubra.";
+    const mensagem = "Identidade, confirmada. Bem-vinda... Pepper Potts. O futuro da sua marca, agora é estritamente confidencial. Toque na tela e descubra.";
     let indexTexto = 0;
     let fase = 0; // 0 = início, 1 = decodificando / pronto para subir
     let subiu = false;
