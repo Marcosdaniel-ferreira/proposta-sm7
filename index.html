@@ -7,7 +7,104 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
+/* ── TELA DE INTRODUÇÃO (HUD) NEON ── */
+#hud-intro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #030305;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Share Tech Mono', monospace;
+  color: #e0e0e0;
+  transition: opacity 1.5s ease, visibility 1.5s;
+  cursor: pointer; /* A tela toda é clicável */
+}
+
+#hud-intro.oculto {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* O aviso pulsante para tocar na tela */
+#toque-tela {
+  font-size: 1.1rem;
+  letter-spacing: 0.25em;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0 0 5px #012dc7, 0 0 15px #012dc7, 0 0 30px #012dc7;
+  animation: pulso-neon 1.5s infinite alternate;
+}
+
+@keyframes pulso-neon {
+  from { opacity: 0.4; text-shadow: 0 0 5px #012dc7; }
+  to { opacity: 1; text-shadow: 0 0 10px #012dc7, 0 0 20px #4d73ff, 0 0 40px #012dc7; }
+}
+
+#hud-conteudo {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 90%;
+  max-width: 600px;
+}
+
+/* Container da foto com borda neon e scanner */
+.hud-foto-container {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  margin-bottom: 24px;
+  border: 2px solid #012dc7;
+  box-shadow: 0 0 20px rgba(1, 45, 199, 0.6), inset 0 0 20px rgba(1, 45, 199, 0.6);
+  overflow: hidden;
+}
+
+.hud-foto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Converte a foto comum em um holograma azulado */
+  filter: grayscale(100%) contrast(1.5) sepia(100%) hue-rotate(190deg) saturate(400%);
+}
+
+/* Linha de escaneamento que sobe e desce na foto */
+.hud-scanner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #ffffff;
+  box-shadow: 0 0 15px #ffffff, 0 0 25px #012dc7;
+  animation: scan-retina 2s infinite linear;
+}
+
+@keyframes scan-retina {
+  0% { top: -10%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 110%; opacity: 0; }
+}
+
+#texto-maquina {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(1, 45, 199, 0.8);
+  min-height: 100px;
+}
+
     *, *::before, *::after {
       margin: 0;
       padding: 0;
@@ -212,6 +309,22 @@
   </style>
 </head>
 <body>
+<!-- HUD DE INTRODUÇÃO -->
+<div id="hud-intro">
+  <!-- Aviso inicial em tela cheia -->
+  <div id="toque-tela">[ TOQUE NA TELA PARA INICIAR DECODIFICAÇÃO ]</div>
+
+  <!-- Conteúdo que aparece após o toque -->
+  <div id="hud-conteudo">
+    <div class="hud-foto-container">
+      <img src="imagens/foto-lilian.png" alt="Alvo" class="hud-foto" id="hud-foto" />
+      <div class="hud-scanner"></div>
+    </div>
+    <div id="texto-maquina"></div>
+  </div>
+
+  <audio id="audio-voz" src="audio/voz-lilian.mp3" preload="auto"></audio>
+</div>
 
   <!-- AVISO MOBILE -->
   <div class="aviso-mobile">
@@ -317,6 +430,45 @@
       }
     });
   </script>
+ <script>
+  const hudIntro = document.getElementById('hud-intro');
+  const toqueTela = document.getElementById('toque-tela');
+  const hudConteudo = document.getElementById('hud-conteudo');
+  const textoMaquina = document.getElementById('texto-maquina');
+  const audioVoz = document.getElementById('audio-voz');
+
+  const mensagem = "Olá, Lilian Mara. Bem-vinda ao novo. A seguir, iremos te mostrar uma proposta exclusiva para sua marca. Decodificação concluída.";
+  let indexTexto = 0;
+  let hudIniciado = false; // Evita que o usuário clique duas vezes e bugue o áudio
+
+  function digitarTexto() {
+    if (indexTexto < mensagem.length) {
+      textoMaquina.innerHTML += mensagem.charAt(indexTexto);
+      indexTexto++;
+      setTimeout(digitarTexto, 45); 
+    } else {
+      setTimeout(() => {
+        hudIntro.classList.add('oculto');
+        setTimeout(() => audioVoz.pause(), 1500); 
+      }, 2000);
+    }
+  }
+
+  // A tela inteira reage ao primeiro toque
+  hudIntro.addEventListener('click', () => {
+    if (hudIniciado) return; 
+    hudIniciado = true;
+
+    toqueTela.style.display = 'none'; // Some com o aviso "Toque na tela"
+    hudConteudo.style.display = 'flex'; // Revela o holograma e prepara o texto
+    
+    // Pequeno atraso dramático antes de começar a voz e o texto
+    setTimeout(() => {
+      audioVoz.play();
+      digitarTexto(); 
+    }, 500);
+  });
+</script>
 
 </body>
 </html>
